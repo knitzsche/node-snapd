@@ -37,12 +37,6 @@ async function main(){
   await snap.getConf({"name": "test-configure", "keys":["age", "speed"]})
       .then(res => console.log('snap.getConf(\'"test-configure"\') ->', res))
       .catch(error => console.log('fail! snap.getConf(\'"test-configure"\') ->', error))
-  
-
-  
-
-
-
 
 }
 function timeout(ms) {
