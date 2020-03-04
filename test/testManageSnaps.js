@@ -22,11 +22,6 @@ async function main(){
     .then(res => console.log('snap.postApps(\'"test-apps"\') ->', res))
     .catch(error => console.log('fail! snap.postApps(\'"test-apps"\') ->', error))
 
-  
-
-
-
-
 }
 
 main().then().catch(err=>{
