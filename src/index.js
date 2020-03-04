@@ -197,6 +197,31 @@ class SnapClient {
 
     throw new Error('malformed response')
   }
+  /**
+   * control snaps via start/stop/enable/disable
+   * @method
+   */
+  async postApps(names, action, enable=false, disable=false, reload=false) {
+    const data = {
+      names:names,
+      action:action,
+      enable:enable,
+      disable:disable,
+      reload:reload
+    }
+
+    const response = await this.rest({
+      method: 'POST',
+      path: '/v2/apps',
+      data: JSON.stringify(data)
+    })
+
+    if (response && response['status-code'] === 200) {
+      return response.result
+    }
+
+    throw new Error('malformed response')
+  }
 
   /**
    * Get detailed info about a snap
