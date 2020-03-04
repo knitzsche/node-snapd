@@ -79,7 +79,6 @@ class SnapClient {
             const json = JSON.parse(body)
             return resolve(json)
           }
-          console.log(body)
           const json = JSON.parse(body)
 
           return reject(new SnapdError(json))
