@@ -48,7 +48,7 @@ class SnapClient {
    */
   async rest({auth, method, path, data}) {
     return new Promise((resolve, reject) => {
-      const post = method === 'POST'
+      const post = method === 'POST' || method === 'PUT'
       const headers = { 'Content-Type': 'application/json' }
       if (post) {
         headers['Content-Length'] = Buffer.byteLength(data)
@@ -56,11 +56,10 @@ class SnapClient {
       if (auth && typeof auth.macaroon === 'string') {
         headers['Authorization'] = `Macaroon root="${auth.macaroon}"`
       }
-
       const options = {
         socketPath: this.socketPath,
         path: path,
-        method: post ? 'POST' : 'GET',
+        method: method,
         headers: headers
       }
 
@@ -214,6 +213,47 @@ class SnapClient {
       data: JSON.stringify(data)
     })
     if (response && response['status-code'] === 202) {
+      return response.status
+    }
+
+    throw new Error('malformed response')
+  }
+
+  /**
+   * get snap configuration parameters
+   * @method
+   * @param {object}  data
+   * @param {string}  data.name
+   * @param {array}  data.keys
+   */
+  async getConf(data) {
+    const response = await this.rest({
+      auth: await this.readAuth(),
+      method: 'GET',
+      path: '/v2/snaps/'+data.name+'/conf',
+      data: JSON.stringify(data.keys)
+    })
+    if (response && response['status-code'] === 200) {
+      return response.result
+    }
+
+    throw new Error('malformed response')
+  }
+  /**
+   * set snap configuration parameters
+   * @method
+   * @param {object}  data
+   * @param {string}  data.name
+   * @param {object}  data.keys
+   */
+  async putConf(data) {
+    const response = await this.rest({
+      auth: await this.readAuth(),
+      method: 'PUT',
+      path: '/v2/snaps/'+data.name+'/conf',
+      data: JSON.stringify(data.keys)
+    })
+    if (response && (response['status-code'] === 202 || response['status-code'] === 200)) {
       return response.status
     }
 
