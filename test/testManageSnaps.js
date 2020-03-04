@@ -18,9 +18,9 @@ async function main(){
     .then(res => console.log('snap.info(\'core\') ->', res))
     .catch(error => console.log('fail! snap.info(\'core\') ->', error))
 
-  await snap.postApps({names:['test-apps'], action:'stop', enable:false, disable:false, reload:false})
-    .then(res => console.log('snap.postApps(\'core\') ->', res))
-    .catch(error => console.log('fail! snap.postApps(\'core\') ->', error))
+  await snap.postApps({"names": ["test-apps"], "action":"stop"})
+    .then(res => console.log('snap.postApps(\'"test-apps"\') ->', res))
+    .catch(error => console.log('fail! snap.postApps(\'"test-apps"\') ->', error))
 
   
 

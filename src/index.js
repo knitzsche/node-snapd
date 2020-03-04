@@ -79,7 +79,7 @@ class SnapClient {
             const json = JSON.parse(body)
             return resolve(json)
           }
-
+          console.log(body)
           const json = JSON.parse(body)
 
           return reject(new SnapdError(json))
@@ -200,24 +200,22 @@ class SnapClient {
   /**
    * control snaps via start/stop/enable/disable
    * @method
+   * @param {object}  data
+   * @param {object}  data.names
+   * @param {string}  data.action
+   * @param {boolean}  options.enable
+   * @param {boolean}  options.disable
+   * @param {boolean}  options.reload
    */
-  async postApps(names, action, enable=false, disable=false, reload=false) {
-    const data = {
-      names:names,
-      action:action,
-      enable:enable,
-      disable:disable,
-      reload:reload
-    }
-
+  async postApps(data) {
     const response = await this.rest({
+      auth: await this.readAuth(),
       method: 'POST',
       path: '/v2/apps',
       data: JSON.stringify(data)
     })
-
-    if (response && response['status-code'] === 200) {
-      return response.result
+    if (response && response['status-code'] === 202) {
+      return response.status
     }
 
     throw new Error('malformed response')
