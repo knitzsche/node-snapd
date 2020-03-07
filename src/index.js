@@ -227,7 +227,6 @@ class SnapClient {
    */
   async getConf(data) {
     const response = await this.rest({
-      auth: await this.readAuth(),
       method: 'GET',
       path: '/v2/snaps/'+data.name+'/conf',
       data: JSON.stringify(data.keys)
@@ -247,7 +246,6 @@ class SnapClient {
    */
   async putConf(data) {
     const response = await this.rest({
-      auth: await this.readAuth(),
       method: 'PUT',
       path: '/v2/snaps/'+data.name+'/conf',
       data: JSON.stringify(data.keys)
