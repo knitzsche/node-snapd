@@ -29,6 +29,7 @@ class SnapdError extends Error {
  */
 class SnapClient {
   constructor(
+    authFile=path.join(os.homedir(), '.snap', 'auth.json'),
     socketPath=`/run/snapd.socket`
   ){
     this.auth = undefined
@@ -206,7 +207,6 @@ class SnapClient {
    */
   async postApps(data) {
     const response = await this.rest({
-      auth: await this.readAuth(),
       method: 'POST',
       path: '/v2/apps',
       data: JSON.stringify(data)
