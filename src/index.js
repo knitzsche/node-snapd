@@ -29,7 +29,6 @@ class SnapdError extends Error {
  */
 class SnapClient {
   constructor(
-    authFile=path.join(os.homedir(), '.snap', 'auth.json'),
     socketPath=`/run/snapd.socket`
   ){
     this.auth = undefined
